@@ -1,0 +1,14 @@
+<section class="slide-page-frame{% if slide.css_class %} slide-page-frame--{{ slide.css_class }}{% endif %}"
+         id="slide-{{ slide.index + 1 }}" data-index="{{ slide.index }}" data-title="{{ slide.title }}"
+         role="group" aria-roledescription="slide"
+         aria-label="{{ slide.index + 1 }} of {{ deck.slides | length }}{% if slide.title %}: {{ slide.title }}{% endif %}">
+  <div class="slide-page-content">
+  {% for block in slide.blocks %}
+    {{ render_block(block, mode) }}
+  {% endfor %}
+  </div>
+  <footer class="slide-page-folio">
+    <span class="slide-page-folio-title">{{ deck.title }}</span>
+    <span class="slide-page-folio-number"><span class="visually-hidden">Slide </span>{{ "%02d" | format(slide.index + 1) }}<span class="slide-page-folio-total">/{{ "%02d" | format(deck.slides | length) }}</span></span>
+  </footer>
+</section>

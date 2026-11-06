@@ -1,0 +1,95 @@
+{# Native <dialog>: focus is trapped and Escape closes, without extra code. #}
+<dialog class="deck-menu-window" data-dialog="outline" aria-labelledby="outline-heading">
+  <div class="deck-menu-window-header">
+    <h2 class="deck-menu-window-title" id="outline-heading">Slides</h2>
+    <button type="button" class="deck-menu-window-close" data-close-dialog aria-label="Close">&times;</button>
+  </div>
+  <div class="deck-outline-search">
+    <label class="deck-outline-search-label" for="outline-filter">Find a slide</label>
+    <input class="deck-outline-search-input" id="outline-filter" type="search" autocomplete="off" spellcheck="false" placeholder="Any word on the slide" data-outline-filter>
+    <p class="deck-outline-search-status" role="status" aria-live="polite" data-outline-status></p>
+  </div>
+  <ol class="deck-outline-list">
+  {% for slide in deck.slides %}
+    <li class="deck-outline-list-item" data-outline-item="{{ slide.index }}">
+      <button type="button" class="deck-outline-list-button" data-goto="{{ slide.index }}">
+        <span class="deck-outline-list-number">{{ "%02d" | format(slide.index + 1) }}</span>
+        <span class="deck-outline-list-title">{{ slide.title or "Untitled slide" }}</span>
+      </button>
+    </li>
+  {% endfor %}
+  </ol>
+</dialog>
+
+<dialog class="deck-menu-window" data-dialog="options" aria-labelledby="options-heading">
+  <div class="deck-menu-window-header">
+    <h2 class="deck-menu-window-title" id="options-heading">Options</h2>
+    <button type="button" class="deck-menu-window-close" data-close-dialog aria-label="Close">&times;</button>
+  </div>
+  <form class="deck-options-form" data-options-form>
+    <fieldset class="deck-options-group">
+      <legend class="deck-options-group-legend">Palette</legend>
+      <label class="deck-options-choice">
+        <input type="radio" name="theme" value="">
+        <span class="deck-options-choice-label">Deck default</span>
+      </label>
+      {% for theme_item in themes.values() %}
+      <label class="deck-options-choice">
+        <input type="radio" name="theme" value="{{ theme_item.name }}">
+        <span class="deck-options-swatch theme-{{ theme_item.name }}" aria-hidden="true">
+          {% for _ in range(4) %}<span class="deck-options-swatch-chip"></span>{% endfor %}
+        </span>
+        <span class="deck-options-choice-label">{{ theme_item.label }}</span>
+      </label>
+      {% endfor %}
+    </fieldset>
+    <fieldset class="deck-options-group">
+      <legend class="deck-options-group-legend">Lettering</legend>
+      <label class="deck-options-choice"><input type="radio" name="font" value="pixel"><span class="deck-options-choice-label">Pixel</span></label>
+      <label class="deck-options-choice"><input type="radio" name="font" value="readable"><span class="deck-options-choice-label">Readable (Atkinson Hyperlegible)</span></label>
+    </fieldset>
+    <fieldset class="deck-options-group">
+      <legend class="deck-options-group-legend">Motion</legend>
+      <label class="deck-options-choice"><input type="radio" name="motion" value="full"><span class="deck-options-choice-label">Animate</span></label>
+      <label class="deck-options-choice"><input type="radio" name="motion" value="reduce"><span class="deck-options-choice-label">Reduce motion</span></label>
+    </fieldset>
+    <fieldset class="deck-options-group">
+      <legend class="deck-options-group-legend">Screen effect</legend>
+      <label class="deck-options-choice"><input type="radio" name="lcd" value="on"><span class="deck-options-choice-label">LCD pixel grid</span></label>
+      <label class="deck-options-choice"><input type="radio" name="lcd" value="off"><span class="deck-options-choice-label">Flat</span></label>
+    </fieldset>
+    <fieldset class="deck-options-group">
+      <legend class="deck-options-group-legend">Sound</legend>
+      <label class="deck-options-choice"><input type="radio" name="sound" value="off"><span class="deck-options-choice-label">Off</span></label>
+      <label class="deck-options-choice"><input type="radio" name="sound" value="on"><span class="deck-options-choice-label">Blips on navigation</span></label>
+    </fieldset>
+    <p class="deck-options-note">Saved in this browser. Your system's reduced-motion and high-contrast settings are followed until you choose here.</p>
+  </form>
+</dialog>
+
+<dialog class="deck-menu-window" data-dialog="help" aria-labelledby="help-heading">
+  <div class="deck-menu-window-header">
+    <h2 class="deck-menu-window-title" id="help-heading">Controls</h2>
+    <button type="button" class="deck-menu-window-close" data-close-dialog aria-label="Close">&times;</button>
+  </div>
+  <table class="deck-help-table">
+    <caption class="visually-hidden">Keyboard shortcuts</caption>
+    <thead><tr><th scope="col">Key</th><th scope="col">Action</th></tr></thead>
+    <tbody>
+      <tr><td><kbd>&rarr;</kbd> <kbd>Space</kbd> <kbd>PgDn</kbd></td><td>Next step or slide</td></tr>
+      <tr><td><kbd>&larr;</kbd> <kbd>Shift</kbd>+<kbd>Space</kbd> <kbd>PgUp</kbd></td><td>Previous step or slide</td></tr>
+      <tr><td><kbd>Home</kbd> <kbd>End</kbd></td><td>First or last slide</td></tr>
+      <tr><td><kbd>7</kbd> then <kbd>Enter</kbd></td><td>Jump to slide 7</td></tr>
+      <tr><td><kbd>O</kbd></td><td>List of slides, with a search box</td></tr>
+      <tr><td><kbd>P</kbd></td><td>Options</td></tr>
+      <tr><td><kbd>R</kbd></td><td>Readable lettering on or off</td></tr>
+      <tr><td><kbd>C</kbd></td><td>High contrast on or off</td></tr>
+      <tr><td><kbd>M</kbd></td><td>Sound on or off</td></tr>
+      <tr><td><kbd>.</kbd></td><td>Pause screen (blank it) or bring it back</td></tr>
+      <tr><td><kbd>A</kbd></td><td>Show the answer to a quiz</td></tr>
+      <tr><td><kbd>S</kbd></td><td>Presenter view</td></tr>
+      <tr><td><kbd>F</kbd></td><td>Fullscreen</td></tr>
+      <tr><td><kbd>?</kbd></td><td>This help</td></tr>
+    </tbody>
+  </table>
+</dialog>

@@ -1,0 +1,15 @@
+<div class="slide-callout-card slide-callout-card--{{ block.variant }}"{% if block.variant in ("note", "warning") %} role="note"{% if block.title %} aria-label="{{ block.variant }}: {{ block.title }}"{% endif %}{% endif %}>
+{% if block.variant == "stat" %}
+  <p class="slide-callout-card-figure">{{ block.title or "" }}</p>
+  <div class="slide-callout-card-body">{{ block.body | md }}</div>
+{% elif block.variant == "quote" %}
+  <blockquote class="slide-callout-card-quote">{{ block.body | md }}</blockquote>
+  {% if block.cite %}<p class="slide-callout-card-cite">{{ block.cite }}</p>{% endif %}
+{% else %}
+  <p class="slide-callout-card-header">
+    <span class="slide-callout-card-label"><span class="slide-callout-card-icon" aria-hidden="true">{{ "!" if block.variant == "warning" else "i" }}</span>{{ block.variant }}</span>
+    {% if block.title %}<span class="slide-callout-card-title">{{ block.title | md_inline }}</span>{% endif %}
+  </p>
+  <div class="slide-callout-card-body">{{ block.body | md }}</div>
+{% endif %}
+</div>

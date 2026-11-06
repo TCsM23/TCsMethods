@@ -1,0 +1,10 @@
+<div class="slide-meter-bar slide-meter-bar--{{ block.variant }}">
+  <p class="slide-meter-bar-label" aria-hidden="true">{{ block.label }}</p>
+  <div class="slide-meter-bar-track" role="meter"
+       aria-label="{{ block.label }}"
+       aria-valuemin="0" aria-valuemax="{{ block.max }}" aria-valuenow="{{ block.value }}" aria-valuetext="{{ block.value_text }}">
+    {% for i in range(block.segments) %}<span class="slide-meter-bar-segment{% if i < block.filled %} is-filled{% endif %}"></span>{% endfor %}
+  </div>
+  <p class="slide-meter-bar-value" aria-hidden="true">{{ "%g" | format(block.value) }}<span class="slide-meter-bar-max">/{{ "%g" | format(block.max) }}</span>{% if block.unit %} {{ block.unit }}{% endif %}</p>
+  {% if block.body %}<div class="slide-meter-bar-note">{{ block.body | md }}</div>{% endif %}
+</div>

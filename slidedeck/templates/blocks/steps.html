@@ -1,0 +1,12 @@
+{# Every step is in the page from the start, so print, the text view and a
+   page without JavaScript show them all. deck.js hides the ones still to come. #}
+{% set tag = "ol" if block.style == "number" else "ul" if block.style == "bullet" else "div" %}
+<{{ tag }} class="slide-steps-list slide-steps-list--{{ block.style }}"{% if mode == "screen" %} data-steps{% endif %}>
+{% for item in block.items %}
+  <{{ "div" if tag == "div" else "li" }} class="slide-steps-list-item"{% if mode == "screen" %} data-step-item{% endif %}>
+  {% for child in item %}
+    {{ render_block(child, mode) }}
+  {% endfor %}
+  </{{ "div" if tag == "div" else "li" }}>
+{% endfor %}
+</{{ tag }}>

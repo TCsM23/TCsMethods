@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en" class="theme-dmg" data-default-theme="dmg" data-themes="dmg pocket berry night contrast">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; style-src 'self'; font-src 'self'; img-src 'self' data: blob:; connect-src 'self'; worker-src 'self'; object-src 'none'; base-uri 'none'">
+  <title>Pixel Slides</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#0f380f">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Pixel Slides">
+  <link rel="apple-touch-icon" href="icons/icon-180.png">
+  <link rel="icon" href="icons/icon-32.png">
+  <link rel="stylesheet" href="static/fonts/fonts.css">
+  <link rel="stylesheet" href="themes.css">
+  <link rel="stylesheet" href="static/theme.css">
+  <link rel="stylesheet" href="static/slides.css">
+  <link rel="stylesheet" href="app.css">
+  <script src="static/prefs.js"></script>
+  <script src="app.js" type="module"></script>
+</head>
+<body class="library-view">
+<main class="library-list-container">
+  <p class="library-list-kicker">Pixel Slides</p>
+
+  <section data-view="library" aria-labelledby="library-heading">
+    <h1 class="library-list-header" id="library-heading">Select a deck</h1>
+    <div class="library-toolbar-row" role="toolbar" aria-label="Deck tools">
+      <button type="button" class="library-toolbar-button" data-action="new">New deck</button>
+      <label class="library-toolbar-button">Import .md<input type="file" class="visually-hidden" accept=".md,.markdown,.txt,text/markdown,text/plain" data-import></label>
+      <button type="button" class="library-toolbar-button" data-action="install" hidden>Install app</button>
+    </div>
+    <ul class="library-list-items" data-deck-list>
+      <li class="library-list-item">Loading…</li>
+    </ul>
+  </section>
+
+  <section data-view="editor" aria-labelledby="editor-heading" hidden>
+    <h1 class="library-list-header" id="editor-heading" data-editor-title>Edit deck</h1>
+    <div class="library-toolbar-row" role="toolbar" aria-label="Editor tools">
+      <button type="button" class="library-toolbar-button" data-action="play">Save and play</button>
+      <button type="button" class="library-list-item-action" data-action="save">Save</button>
+      <button type="button" class="library-list-item-action" data-action="insert" aria-haspopup="dialog">Insert block</button>
+      <label class="library-list-item-action">Add picture<input type="file" class="visually-hidden" accept="image/png,image/jpeg,image/gif,image/webp,image/avif,image/svg+xml" data-picture></label>
+      <button type="button" class="library-list-item-action" data-action="share">Share .md</button>
+      <button type="button" class="library-list-item-action" data-action="duplicate">Duplicate</button>
+      <button type="button" class="library-list-item-action" data-action="back">Back</button>
+    </div>
+    <label class="editor-pane-label" for="editor-source">Deck in Markdown. A <code>---</code> line with a blank line before it starts a new slide.</label>
+    <textarea class="editor-pane-source" id="editor-source" spellcheck="false" autocapitalize="off" autocomplete="off" data-source></textarea>
+    <div class="editor-pane-report" data-report></div>
+    <p><button type="button" class="library-list-item-action editor-pane-delete" data-action="delete">Delete this deck</button></p>
+  </section>
+
+  <p class="library-toolbar-status" role="status" aria-live="polite" data-status></p>
+</main>
+
+<dialog class="deck-menu-window" data-new-dialog aria-labelledby="new-heading">
+  <div class="deck-menu-window-header">
+    <h2 class="deck-menu-window-title" id="new-heading">New deck</h2>
+    <button type="button" class="deck-menu-window-close" data-close aria-label="Close">&times;</button>
+  </div>
+  <form class="deck-options-form" data-new-form>
+    <label class="deck-outline-search-label" for="new-title">Title</label>
+    <input class="deck-outline-search-input library-new-deck-title" id="new-title" name="title" required maxlength="120" value="My talk">
+    <fieldset class="deck-options-group" data-starters>
+      <legend class="deck-options-group-legend">Start from</legend>
+    </fieldset>
+    <button type="submit" class="library-toolbar-button">Create and edit</button>
+  </form>
+</dialog>
+
+<dialog class="deck-menu-window" data-insert-dialog aria-labelledby="insert-heading">
+  <div class="deck-menu-window-header">
+    <h2 class="deck-menu-window-title" id="insert-heading">Insert block</h2>
+    <button type="button" class="deck-menu-window-close" data-close aria-label="Close">&times;</button>
+  </div>
+  <p class="editor-insert-hint">Goes in where the cursor is. Replace the example text with yours.</p>
+  <ul class="editor-insert-list" data-snippets></ul>
+</dialog>
+
+<div class="engine-boot-screen" data-boot hidden>
+  <p class="engine-boot-screen-logo">Pixel Slides</p>
+  <p class="engine-boot-screen-hint" data-boot-text>Starting the engine…</p>
+</div>
+</body>
+</html>

@@ -1,0 +1,10 @@
+<figure class="slide-sprite-frame">
+  <svg class="slide-sprite-frame-art" role="img" aria-label="{{ block.alt }}"
+       viewBox="0 0 {{ block.width }} {{ block.height }}"
+       width="{{ block.width * block.scale }}" height="{{ block.height * block.scale }}"
+       shape-rendering="crispEdges">
+    {% for run in block.runs %}<rect class="slide-sprite-frame-pixel slide-sprite-frame-pixel--{{ run.shade }}" x="{{ run.x }}" y="{{ run.y }}" width="{{ run.width }}" height="1"/>{% endfor %}
+  </svg>
+  {% if block.caption %}<figcaption class="slide-sprite-frame-caption">{{ block.caption | md_inline }}</figcaption>
+  {% elif mode == "text" %}<figcaption class="slide-sprite-frame-caption">{{ block.alt }}</figcaption>{% endif %}
+</figure>

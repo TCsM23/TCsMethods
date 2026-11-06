@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block body_class %}library-view{% endblock %}
+{% block body %}
+<main class="library-list-container">
+  <p class="library-list-kicker">Pixel Slides</p>
+  <h1 class="library-list-header">Select a deck</h1>
+  {% if desktop %}
+  <div class="library-toolbar-row" role="toolbar" aria-label="Deck tools">
+    <button type="button" class="library-toolbar-button" data-desktop-action="new-deck">New deck</button>
+    <button type="button" class="library-toolbar-button" data-desktop-action="open-folder">Open decks folder</button>
+  </div>
+  <p class="library-toolbar-status" role="status" aria-live="polite" data-desktop-status>Decks live in {{ desktop.decks_dir }}. Edit a deck and the open slides reload.</p>
+  {% endif %}
+  <ul class="library-list-items">
+  {% for item in decks %}
+    <li class="library-list-item">
+      <a class="library-list-item-link" href="{{ base }}/deck/{{ item.name }}/1">
+        <span class="library-list-item-cursor" aria-hidden="true">&#9654;</span>
+        <span class="library-list-item-title">{{ item.title }}</span>
+        <span class="library-list-item-meta">
+          {{ item.count }} slides · {{ item.theme.label }}
+          <span class="deck-options-swatch theme-{{ item.theme.name }}" aria-hidden="true">{% for _ in range(4) %}<span class="deck-options-swatch-chip"></span>{% endfor %}</span>
+        </span>
+      </a>
+      <a class="library-list-item-text" href="{{ base }}/deck/{{ item.name }}/text">Text version<span class="visually-hidden"> of {{ item.title }}</span></a>
+      {% if desktop %}
+      <button type="button" class="library-list-item-action" data-desktop-action="edit" data-deck="{{ item.name }}">Edit<span class="visually-hidden"> {{ item.title }}</span></button>
+      <button type="button" class="library-list-item-action" data-desktop-action="export" data-deck="{{ item.name }}">Export PDF<span class="visually-hidden"> of {{ item.title }}</span></button>
+      <button type="button" class="library-list-item-action" data-desktop-action="handout" data-deck="{{ item.name }}">Handout PDF<span class="visually-hidden"> of {{ item.title }}, with speaker notes</span></button>
+      <button type="button" class="library-list-item-action" data-desktop-action="duplicate" data-deck="{{ item.name }}">Duplicate<span class="visually-hidden"> {{ item.title }}</span></button>
+      {% endif %}
+    </li>
+  {% else %}
+    <li class="library-list-item">No decks yet. {% if desktop %}Press New deck.{% else %}Add a .md file to decks/.{% endif %}</li>
+  {% endfor %}
+  </ul>
+</main>
+{% if desktop %}
+<dialog class="deck-menu-window" data-new-deck-dialog aria-labelledby="new-deck-heading">
+  <div class="deck-menu-window-header">
+    <h2 class="deck-menu-window-title" id="new-deck-heading">New deck</h2>
+    <button type="button" class="deck-menu-window-close" data-close-new-deck aria-label="Close">&times;</button>
+  </div>
+  <form class="deck-options-form" method="dialog" data-new-deck-form>
+    <label class="deck-outline-search-label" for="new-deck-title">Title</label>
+    <input class="deck-outline-search-input library-new-deck-title" id="new-deck-title" name="title" required maxlength="120" value="My talk">
+    <fieldset class="deck-options-group">
+      <legend class="deck-options-group-legend">Start from</legend>
+      {% for starter in starters %}
+      <label class="deck-options-choice library-new-deck-choice">
+        <input type="radio" name="starter" value="{{ starter.name }}"{% if loop.first %} checked{% endif %}>
+        <span class="deck-options-choice-label">{{ starter.label }} <span class="library-new-deck-hint">{{ starter.description }}</span></span>
+      </label>
+      {% endfor %}
+    </fieldset>
+    <button type="submit" class="library-toolbar-button">Create and edit</button>
+  </form>
+</dialog>
+{% endif %}
+{% endblock %}

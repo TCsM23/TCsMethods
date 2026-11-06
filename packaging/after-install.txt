@@ -1,0 +1,14 @@
+Pixel Slides is installed.
+
+Your decks live in Documents\Pixel Slides\decks. The sample decks are copied
+there the first time the app starts (after an update, only new ones are added).
+
+- Press "Edit" next to a deck to open it in your text editor. Save the file
+  and the open slides reload on their own.
+- "New deck" starts from Basic, Talk or Lesson. "Duplicate" makes a copy.
+- "Export PDF" and "Handout PDF" (slides with speaker notes) save to
+  Documents\Pixel Slides\exports, using Microsoft Edge in the background
+  (nothing extra to download).
+- In a deck, press ? for every keyboard shortcut.
+
+Uninstalling keeps your decks.

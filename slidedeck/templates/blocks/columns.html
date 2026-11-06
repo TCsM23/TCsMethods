@@ -1,0 +1,9 @@
+<div class="slide-columns-grid slide-columns-grid--{{ block.layout }}">
+{% for column in block.columns %}
+  <div class="slide-columns-grid-cell">
+  {% for child in column %}
+    {{ render_block(child, mode) }}
+  {% endfor %}
+  </div>
+{% endfor %}
+</div>

@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}{{ deck.slides[index].title or deck.title }} · {{ index + 1 }}/{{ deck.slides | length }} · {{ deck.title }}{% endblock %}
+{% block body_class %}deck-view{% endblock %}
+{% block body_attrs %}data-deck="{{ name }}" data-deck-title="{{ deck.title }}" data-index="{{ index }}" data-count="{{ deck.slides | length }}" data-theme-query="{{ theme_query }}"{% if deck.boot %} data-boot{% endif %}{% if dev %} data-dev{% endif %}{% endblock %}
+{% block body %}
+<nav class="deck-skip-nav" aria-label="Skip link"><a class="deck-skip-link" href="{{ base }}/deck/{{ name }}/text{{ theme_query }}#slide-{{ index + 1 }}">Skip to the text version of this deck</a></nav>
+<main class="deck-stage-viewport" aria-label="{{ deck.title }}">
+  <div class="deck-stage-canvas">
+  {% for slide in deck.slides %}
+    {% include "_slide.html" %}
+  {% endfor %}
+  </div>
+</main>
+{# Screen readers hear "Slide 4 of 12: title" after every move. #}
+<p class="visually-hidden" role="status" aria-live="polite" aria-atomic="true" data-live></p>
+
+<div class="deck-progress-track" aria-hidden="true">
+  {% for slide in deck.slides %}<span class="deck-progress-track-segment" data-segment="{{ slide.index }}"></span>{% endfor %}
+</div>
+
+<nav class="deck-nav-bar" aria-label="Slide navigation">
+  <a class="deck-nav-bar-link" href="{{ base }}/">Decks</a>
+  <span class="deck-nav-bar-divider" aria-hidden="true"></span>
+  <button type="button" class="deck-nav-bar-button" data-step="-1" aria-label="Previous slide" aria-keyshortcuts="ArrowLeft">&#9664;</button>
+  <span class="deck-nav-bar-counter"><span data-current>{{ index + 1 }}</span>/{{ deck.slides | length }}</span>
+  <button type="button" class="deck-nav-bar-button" data-step="1" aria-label="Next slide" aria-keyshortcuts="ArrowRight">&#9654;</button>
+  <span class="deck-nav-bar-divider" aria-hidden="true"></span>
+  <button type="button" class="deck-nav-bar-link" data-open-dialog="outline" aria-keyshortcuts="O" aria-haspopup="dialog">Slides</button>
+  <button type="button" class="deck-nav-bar-link" data-open-dialog="options" aria-keyshortcuts="P" aria-haspopup="dialog">Options</button>
+  <button type="button" class="deck-nav-bar-link" data-open-dialog="help" aria-keyshortcuts="Shift+?" aria-haspopup="dialog" aria-label="Keyboard help">?</button>
+  <span class="deck-nav-bar-divider" aria-hidden="true"></span>
+  <a class="deck-nav-bar-link" href="{{ base }}/deck/{{ name }}/{{ index + 1 }}/presenter{{ theme_query }}" data-presenter-link target="_blank" rel="noopener">Presenter</a>
+  <a class="deck-nav-bar-link" href="{{ base }}/deck/{{ name }}/text{{ theme_query }}" data-text-link>Text</a>
+  <a class="deck-nav-bar-link" href="{{ base }}/deck/{{ name }}/print{{ theme_query }}" data-print-link target="_blank" rel="noopener">Print</a>
+</nav>
+
+{% include "_dialogs.html" %}
+
+{# Press . to blank the screen (for a question, or a break), like a paused game. #}
+<div class="deck-blank-screen" data-blank-screen hidden>
+  <p class="deck-blank-screen-label">Pause</p>
+</div>
+
+{% if deck.boot %}
+<div class="deck-boot-screen" aria-hidden="true" hidden data-boot-screen>
+  <p class="deck-boot-screen-logo">{{ deck.title }}</p>
+  <p class="deck-boot-screen-hint">Press any key</p>
+</div>
+{% endif %}
+<script src="{{ base }}/static/deck.js" defer></script>
+{% endblock %}

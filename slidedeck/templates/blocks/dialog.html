@@ -1,0 +1,7 @@
+<div class="slide-dialog-box"{% if mode == "screen" %} data-typewriter{% endif %}>
+  {% if block.speaker %}<p class="slide-dialog-box-speaker">{{ block.speaker }}</p>{% endif %}
+  {# The real text stays in the page for screen readers and search; the
+     typewriter animates an aria-hidden copy that deck.js fills in. #}
+  <div class="slide-dialog-box-body" data-typewriter-source>{{ block.body | md }}</div>
+  <span class="slide-dialog-box-cursor" aria-hidden="true">&#9660;</span>
+</div>

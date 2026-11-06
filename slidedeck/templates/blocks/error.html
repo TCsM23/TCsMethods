@@ -1,0 +1,5 @@
+<div class="slide-error-card" role="note">
+  <p class="slide-error-card-header"><span class="slide-error-card-icon" aria-hidden="true">!</span> Block error in <code>:::{{ block.block_name }}</code></p>
+  <p class="slide-error-card-message">{{ block.message }}</p>
+  {% if block.source %}<pre class="slide-error-card-source">{{ block.source }}</pre>{% endif %}
+</div>

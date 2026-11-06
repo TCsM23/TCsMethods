@@ -1,0 +1,22 @@
+<figure class="slide-chart-frame">
+  <figcaption class="slide-chart-frame-title">{{ block.title | md_inline }}{% if block.unit %} <span class="slide-chart-frame-unit">({{ block.unit }})</span>{% endif %}</figcaption>
+  {% if mode != "text" %}
+  {# The bars are a picture of the table below, which is what screen readers get. #}
+  <div class="slide-chart-frame-plot" aria-hidden="true">
+    {% for bar in block.bars %}
+    <div class="slide-chart-frame-bar">
+      <span class="slide-chart-frame-value">{{ "%g" | format(bar.value) }}</span>
+      <span class="slide-chart-frame-stack">{% for i in range(block.segments) %}<span class="slide-chart-frame-segment{% if i < block.filled(bar) %} is-filled{% endif %}"></span>{% endfor %}</span>
+      <span class="slide-chart-frame-label">{{ bar.label }}</span>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+  <table class="slide-chart-frame-table{% if mode != 'text' %} visually-hidden{% endif %}">
+    <thead><tr><th scope="col">Item</th><th scope="col">{{ block.unit | capitalize if block.unit else "Value" }}</th></tr></thead>
+    <tbody>
+    {% for bar in block.bars %}<tr><th scope="row">{{ bar.label }}</th><td>{{ "%g" | format(bar.value) }}</td></tr>{% endfor %}
+    </tbody>
+  </table>
+  {% if block.caption %}<p class="slide-chart-frame-caption">{{ block.caption | md_inline }}</p>{% endif %}
+</figure>

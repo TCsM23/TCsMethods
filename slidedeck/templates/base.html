@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="{{ lang | default('en') }}" class="theme-{{ theme }}" data-default-theme="{{ deck.theme if deck is defined else theme }}" data-themes="{{ themes | join(' ') }}" data-base="{{ base }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Pixel Slides{% endblock %}</title>
+  <link rel="stylesheet" href="{{ base }}/static/fonts/fonts.css">
+  <link rel="stylesheet" href="{{ base }}/themes.css">
+  <link rel="stylesheet" href="{{ base }}/static/theme.css">
+  <link rel="stylesheet" href="{{ base }}/static/slides.css">
+  {# Applies saved viewer preferences (readable font, motion...) before first paint. #}
+  <script src="{{ base }}/static/prefs.js"></script>
+  {% if desktop %}<meta name="desktop-token" content="{{ desktop.token }}">
+  <script src="{{ base }}/static/desktop.js" defer></script>{% endif %}
+  {% block head %}{% endblock %}
+</head>
+<body class="{% block body_class %}{% endblock %}" {% block body_attrs %}{% endblock %}>
+{% block body %}{% endblock %}
+{# The LCD photo filter, one per theme: grey the image, then snap it to 4 shades. #}
+<svg class="lcd-filter-defs" aria-hidden="true" focusable="false" width="0" height="0">
+  {% for theme_item in themes.values() %}
+  {% set table = lcd_table(theme_item) %}
+  <filter id="lcd-{{ theme_item.name }}" color-interpolation-filters="sRGB">
+    <feColorMatrix type="saturate" values="0"/>
+    <feComponentTransfer>
+      <feFuncR type="discrete" tableValues="{{ table.R }}"/>
+      <feFuncG type="discrete" tableValues="{{ table.G }}"/>
+      <feFuncB type="discrete" tableValues="{{ table.B }}"/>
+    </feComponentTransfer>
+  </filter>
+  {% endfor %}
+</svg>
+</body>
+</html>

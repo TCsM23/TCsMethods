@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% block title %}Presenter · {{ deck.title }}{% endblock %}
+{% block body_class %}presenter-view{% endblock %}
+{% block body_attrs %}data-deck="{{ name }}" data-deck-title="{{ deck.title }}" data-index="{{ index }}" data-count="{{ deck.slides | length }}" data-theme-query="{{ theme_query }}" data-presenter{% if deck.duration %} data-duration="{{ deck.duration }}"{% endif %}{% if dev %} data-dev{% endif %}{% endblock %}
+{% block body %}
+<main class="presenter-layout-grid">
+  <h1 class="visually-hidden">Presenter view: {{ deck.title }}</h1>
+  <section class="presenter-current-panel" aria-labelledby="presenter-now">
+    <h2 class="presenter-panel-label" id="presenter-now">Now · <span data-current>{{ index + 1 }}</span>/{{ deck.slides | length }}<span data-step-label></span><span class="presenter-blank-badge" data-blank-badge hidden> · Audience screen paused</span></h2>
+    <div class="presenter-current-stage deck-stage-viewport">
+      <div class="deck-stage-canvas">
+      {% for slide in deck.slides %}{% include "_slide.html" %}{% endfor %}
+      </div>
+    </div>
+  </section>
+  <section class="presenter-next-panel" aria-labelledby="presenter-next">
+    <h2 class="presenter-panel-label" id="presenter-next">Next</h2>
+    <div class="presenter-next-stage deck-stage-viewport" data-offset="1" aria-hidden="true">
+      <div class="deck-stage-canvas">
+      {% for slide in deck.slides %}{% include "_slide.html" %}{% endfor %}
+      </div>
+    </div>
+  </section>
+  <section class="presenter-notes-panel" aria-labelledby="presenter-notes">
+    <h2 class="presenter-panel-label" id="presenter-notes">Notes</h2>
+    {% for slide in deck.slides %}
+    <div class="presenter-notes-panel-body" data-notes-for="{{ slide.index }}" hidden>
+      {% if slide.notes %}{{ slide.notes | md }}{% else %}<p class="presenter-notes-panel-empty">No notes for this slide.</p>{% endif %}
+      {% set slide_issues = issues.get(slide.index, []) %}
+      {% if slide_issues %}
+      <div class="presenter-lint-list">
+        <h3 class="presenter-lint-list-header">Access check · {{ slide_issues | length }}</h3>
+        <ul class="presenter-lint-list-items">
+        {% for issue in slide_issues %}
+          <li class="presenter-lint-list-item presenter-lint-list-item--{{ issue.level }}">
+            <span class="presenter-lint-list-level">{{ issue.level }}</span> {{ issue.message }}
+          </li>
+        {% endfor %}
+        </ul>
+      </div>
+      {% endif %}
+    </div>
+    {% endfor %}
+  </section>
+  <section class="presenter-clock-panel" aria-labelledby="presenter-clock">
+    <h2 class="presenter-panel-label" id="presenter-clock">{% if deck.duration %}Time{% else %}Elapsed{% endif %}</h2>
+    <p class="presenter-clock-panel-time" data-timer role="timer" aria-live="off">00:00</p>
+    {% if deck.duration %}
+    {# Front matter `duration: 20`: a countdown, and whether the slides keep pace with it. #}
+    <p class="presenter-clock-panel-left" data-time-left>{{ "%d" | format(deck.duration) }}:00 left</p>
+    <p class="presenter-clock-panel-pace" data-pace>On pace</p>
+    {% endif %}
+    <div class="presenter-clock-panel-actions">
+      <button type="button" class="deck-nav-bar-button" data-step="-1" aria-label="Previous slide or step">&#9664;</button>
+      <button type="button" class="deck-nav-bar-button" data-step="1" aria-label="Next slide or step">&#9654;</button>
+      <button type="button" class="presenter-clock-panel-reset" data-timer-pause aria-pressed="false">Pause timer</button>
+      <button type="button" class="presenter-clock-panel-reset" data-timer-reset>Reset timer</button>
+      <button type="button" class="presenter-clock-panel-reset" data-blank-toggle aria-pressed="false" aria-keyshortcuts=".">Pause screen</button>
+    </div>
+  </section>
+</main>
+<p class="visually-hidden" role="status" aria-live="polite" aria-atomic="true" data-live></p>
+<script src="{{ base }}/static/deck.js" defer></script>
+{% endblock %}

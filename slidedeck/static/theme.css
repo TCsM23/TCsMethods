@@ -1,0 +1,78 @@
+/* ==========================================================================
+   Layout and type tokens. Colours live in /themes.css, generated from
+   slidedeck/themes.py, so that palettes can be contrast-checked by tests.
+
+   Two lettering modes share one set of token names:
+     pixel    - Press Start 2P headlines, VT323 text, Silkscreen labels
+     readable - Atkinson Hyperlegible, for anyone who finds pixel type hard
+   Components only ever use the tokens, so switching mode restyles the deck.
+   ========================================================================== */
+
+:root {
+  /* Canvas: slides are laid out at a fixed 1600x900 and scaled to fit. */
+  --canvas-width: 1600px;
+  --canvas-height: 900px;
+  --page-margin-x: 112px;
+  --page-margin-y: 80px;
+
+  /* One "pixel" of the design grid. Borders, steps and shadows are
+     multiples of it, which is what keeps everything looking 8-bit. */
+  --px: 4px;
+
+  --space-1: 8px;
+  --space-2: 16px;
+  --space-3: 24px;
+  --space-4: 40px;
+  --space-5: 64px;
+
+  --measure: 30em;
+  --step-ease: steps(4, end);
+}
+
+/* --- Pixel lettering (default) ------------------------------------------- */
+/* Press Start 2P is drawn on an 8px grid, so its sizes are multiples of 8. */
+
+:root,
+:root[data-font="pixel"] {
+  --font-display: "Press Start 2P", "Courier New", monospace;
+  --font-text: "VT323", "Courier New", monospace;
+  --font-label: "Silkscreen", "Courier New", monospace;
+  --font-mono: "VT323", "Courier New", monospace;
+
+  --size-label: 24px;
+  --size-small: 32px;
+  --size-body: 42px;
+  --size-lead: 50px;
+  --size-h3: 24px;
+  --size-h2: 40px;
+  --size-h1: 56px;
+  --size-hero: 72px;
+  --size-giant: 96px;
+
+  --leading-display: 1.35;
+  --leading-body: 1.12;
+  --label-tracking: .06em;
+}
+
+/* --- Readable lettering --------------------------------------------------- */
+
+:root[data-font="readable"] {
+  --font-display: "Atkinson Hyperlegible", Verdana, sans-serif;
+  --font-text: "Atkinson Hyperlegible", Verdana, sans-serif;
+  --font-label: "Atkinson Hyperlegible", Verdana, sans-serif;
+  --font-mono: "Atkinson Hyperlegible Mono", Consolas, monospace;
+
+  --size-label: 22px;
+  --size-small: 26px;
+  --size-body: 34px;
+  --size-lead: 40px;
+  --size-h3: 24px;
+  --size-h2: 56px;
+  --size-h1: 72px;
+  --size-hero: 96px;
+  --size-giant: 136px;
+
+  --leading-display: 1.1;
+  --leading-body: 1.4;
+  --label-tracking: .12em;
+}

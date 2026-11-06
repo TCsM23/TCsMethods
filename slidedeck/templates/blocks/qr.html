@@ -1,0 +1,14 @@
+<figure class="slide-qr-frame">
+  <svg class="slide-qr-frame-code" role="img" aria-label="QR code{% if block.is_link %} for the link{% endif %}: {{ block.data }}"
+       viewBox="0 0 {{ block.size }} {{ block.size }}"
+       width="{{ block.size * block.scale }}" height="{{ block.size * block.scale }}"
+       shape-rendering="crispEdges">
+    <rect class="slide-qr-frame-light" width="{{ block.size }}" height="{{ block.size }}"/>
+    {% for run in block.runs %}<rect class="slide-qr-frame-dark" x="{{ run.x }}" y="{{ run.y }}" width="{{ run.width }}" height="1"/>{% endfor %}
+  </svg>
+  <figcaption class="slide-qr-frame-caption">
+    {% if block.caption %}<span class="slide-qr-frame-note">{{ block.caption | md_inline }}</span>{% endif %}
+    {% if block.is_link %}<a class="slide-qr-frame-link" href="{{ block.data }}">{{ block.data.split("://", 1)[1] }}</a>
+    {% else %}<span class="slide-qr-frame-link">{{ block.data }}</span>{% endif %}
+  </figcaption>
+</figure>

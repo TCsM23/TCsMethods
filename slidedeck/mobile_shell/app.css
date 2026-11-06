@@ -1,0 +1,45 @@
+/* Mobile app only: the editor and the engine start-up screen. */
+
+.library-view { padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left); }
+label.library-toolbar-button, label.library-list-item-action { display: inline-grid; place-items: center; }
+label.library-toolbar-button:focus-within, label.library-list-item-action:focus-within { outline: var(--px) solid var(--accent); outline-offset: var(--px); }
+
+.editor-pane-label { display: block; margin: 0 0 8px; font-size: 20px; color: var(--muted); }
+.editor-pane-label code { font-family: var(--font-mono); color: var(--ink); }
+.editor-pane-source {
+  box-sizing: border-box;
+  width: 100%; min-height: 55vh;
+  padding: 12px;
+  border: var(--px) solid var(--ink);
+  background: var(--raised); color: var(--ink);
+  font-family: "Atkinson Hyperlegible Mono", Consolas, monospace; font-size: 16px; line-height: 1.5;
+  resize: vertical;
+}
+.editor-pane-source:focus-visible { outline: var(--px) solid var(--accent); outline-offset: var(--px); }
+.editor-pane-report { margin: 16px 0; font-size: 22px; }
+.editor-pane-report p { margin: 0 0 8px; }
+.editor-pane-error { color: var(--error); }
+.editor-pane-issues { margin: 0; padding-left: 1.2em; }
+.editor-pane-issue.is-error { color: var(--error); }
+.editor-pane-delete { border-color: var(--error); color: var(--error); }
+
+.engine-boot-screen {
+  position: fixed; inset: 0; z-index: 100;
+  display: grid; place-content: center; gap: 24px; text-align: center;
+  background: var(--inverse-paper); color: var(--inverse-ink);
+}
+.engine-boot-screen[hidden] { display: none; }
+.engine-boot-screen-logo { margin: 0; font-family: var(--font-display); font-size: clamp(18px, 6vw, 32px); }
+.engine-boot-screen-hint { margin: 0; font-family: var(--font-label); font-size: 14px; text-transform: uppercase; animation: engine-blink 1s steps(2, end) infinite; }
+@keyframes engine-blink { 50% { opacity: 0; } }
+
+.editor-insert-hint { margin: 16px 24px 8px; font-size: 20px; color: var(--muted); }
+.editor-insert-list { list-style: none; margin: 0; padding: 0 12px 16px; }
+.editor-insert-button {
+  display: grid; gap: 2px; width: 100%; min-height: 44px;
+  padding: 8px 12px; border: 0; background: none; color: var(--ink);
+  text-align: left; cursor: pointer;
+}
+.editor-insert-button:hover, .editor-insert-button:focus-visible { background: var(--raised); }
+.editor-insert-label { font-family: var(--font-label); font-size: 16px; font-weight: 700; text-transform: uppercase; }
+.editor-insert-hint-text { font-size: 18px; color: var(--muted); }

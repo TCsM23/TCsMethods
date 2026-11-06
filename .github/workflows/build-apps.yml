@@ -1,0 +1,59 @@
+# Builds the Windows installer and publishes the mobile app.
+#   - Every push: tests, then PixelSlides-Setup.exe as a downloadable artifact.
+#   - Push to main: the mobile app goes to GitHub Pages
+#     (Settings > Pages > Source: GitHub Actions, once).
+name: Build apps
+
+on:
+  push:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - run: python -m pip install -r requirements.txt
+      - run: python -m pytest -q
+
+  windows-installer:
+    needs: test
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      # Inno Setup is preinstalled on GitHub's Windows images.
+      - run: powershell -ExecutionPolicy Bypass -File packaging\build-windows.ps1
+      - uses: actions/upload-artifact@v4
+        with:
+          name: PixelSlides-Setup
+          path: dist/installer/*.exe
+
+  mobile:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - run: python -m pip install -r requirements.txt pillow
+      - run: python packaging/make_icons.py
+      - run: python -m slidedeck mobile -o dist/mobile
+      - uses: actions/upload-pages-artifact@v3
+        with: { path: dist/mobile }
+
+  pages:
+    if: github.ref == 'refs/heads/main'
+    needs: mobile
+    runs-on: ubuntu-latest
+    permissions: { pages: write, id-token: write }
+    environment: { name: github-pages, url: "${{ steps.deploy.outputs.page_url }}" }
+    steps:
+      - id: deploy
+        uses: actions/deploy-pages@v4

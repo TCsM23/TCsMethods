@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}{{ deck.title }} (text version){% endblock %}
+{% block body_class %}text-view{% endblock %}
+{% block body %}
+<header class="text-view-header">
+  <p class="text-view-kicker">Text version</p>
+  <h1 class="text-view-title">{{ deck.title }}</h1>
+  <p class="text-view-meta">{% if deck.author %}By {{ deck.author }} · {% endif %}{{ deck.slides | length }} slides ·
+    <a href="{{ base }}/deck/{{ name }}/1{{ theme_query }}">Open as slides</a> ·
+    <a href="{{ base }}/">All decks</a> ·
+    {% if show_notes %}<a href="{{ base }}/deck/{{ name }}/text{{ theme_query }}">Hide speaker notes</a>
+    {% else %}<a href="{{ base }}/deck/{{ name }}/text{{ theme_query }}{{ '&' if theme_query else '?' }}notes=1">Show speaker notes</a>{% endif %}
+  </p>
+</header>
+<nav class="text-view-contents" aria-labelledby="contents-heading">
+  <h2 class="text-view-contents-header" id="contents-heading">Contents</h2>
+  <ol class="text-view-contents-list">
+  {% for slide in deck.slides %}
+    <li><a href="#slide-{{ slide.index + 1 }}">{{ slide.title or "Untitled slide" }}</a></li>
+  {% endfor %}
+  </ol>
+</nav>
+<main class="text-view-body">
+{% for slide in deck.slides %}
+  <article class="text-view-slide" id="slide-{{ slide.index + 1 }}" aria-labelledby="slide-{{ slide.index + 1 }}-label">
+    <h2 class="text-view-slide-label" id="slide-{{ slide.index + 1 }}-label">Slide {{ slide.index + 1 }} of {{ deck.slides | length }}{% if slide.title %}: {{ slide.title }}{% endif %}</h2>
+    <div class="text-view-slide-content">
+    {% for block in slide.blocks %}
+      {{ render_text_block(block) }}
+    {% endfor %}
+    </div>
+    {% if show_notes and slide.notes %}
+    <aside class="text-view-slide-notes" aria-label="Speaker notes for slide {{ slide.index + 1 }}">
+      <p class="text-view-slide-notes-label">Speaker notes</p>
+      {{ slide.notes | md }}
+    </aside>
+    {% endif %}
+  </article>
+{% endfor %}
+</main>
+{% endblock %}

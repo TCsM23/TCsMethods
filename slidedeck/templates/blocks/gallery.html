@@ -1,0 +1,20 @@
+{% set variant = "carousel" if block.variant == "carousel" and mode == "screen" else "grid" %}
+<figure class="slide-gallery-frame slide-gallery-frame--{{ variant }}" data-filter="{{ block.filter }}"
+        {% if variant == "carousel" %}data-carousel role="group" aria-roledescription="carousel" aria-label="{{ block.caption or 'Image carousel' }}"{% endif %}>
+  <div class="slide-gallery-{{ variant }}-track">
+  {% for image in block.images %}
+    <div class="slide-gallery-{{ variant }}-item"{% if variant == "carousel" %} role="group" aria-roledescription="slide" aria-label="{{ loop.index }} of {{ block.images | length }}"{% endif %}>
+      <img class="slide-gallery-{{ variant }}-image" src="{{ image.src | url }}" alt="{{ image.alt }}"
+           loading="{{ 'lazy' if mode == 'screen' else 'eager' }}" decoding="async">
+    </div>
+  {% endfor %}
+  </div>
+  {% if variant == "carousel" %}
+  <div class="slide-gallery-carousel-controls">
+    <button type="button" class="slide-gallery-carousel-button" data-carousel-step="-1" aria-label="Previous image">&#9664;</button>
+    <span class="slide-gallery-carousel-counter" data-carousel-counter aria-live="polite">1 / {{ block.images | length }}</span>
+    <button type="button" class="slide-gallery-carousel-button" data-carousel-step="1" aria-label="Next image">&#9654;</button>
+  </div>
+  {% endif %}
+  {% if block.caption %}<figcaption class="slide-gallery-frame-caption">{{ block.caption | md_inline }}</figcaption>{% endif %}
+</figure>

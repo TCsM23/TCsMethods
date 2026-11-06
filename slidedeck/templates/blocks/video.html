@@ -1,0 +1,21 @@
+{% set title = block.title or "Video" %}
+<figure class="slide-video-frame">
+{% if mode == "print" %}
+  <div class="slide-video-frame-placeholder">
+    <span class="slide-video-frame-icon" aria-hidden="true">&#9654;</span>
+    <span class="slide-video-frame-title">{{ title }}</span>
+    <span class="slide-video-frame-source">{{ block.embed_url }}</span>
+  </div>
+{% elif mode == "text" %}
+  <p class="slide-video-frame-link"><a href="{{ block.embed_url | url }}">Watch the video: {{ title }}</a>{% if block.captions %} (<a href="{{ block.captions | url }}">captions</a>){% endif %}</p>
+{% elif block.provider == "local" %}
+  <video class="slide-video-frame-player" src="{{ block.embed_url | url }}" controls preload="metadata" aria-label="{{ title }}"{% if block.captions %} crossorigin="anonymous"{% endif %}>
+    {% if block.captions %}<track kind="captions" src="{{ block.captions | url }}" label="Captions" default>{% endif %}
+  </video>
+{% else %}
+  <iframe class="slide-video-frame-player" src="{{ block.embed_url }}" title="{{ title }}" loading="lazy"
+          allow="accelerometer; encrypted-media; gyroscope; picture-in-picture; fullscreen"
+          referrerpolicy="strict-origin-when-cross-origin"></iframe>
+{% endif %}
+{% if block.caption %}<figcaption class="slide-video-frame-caption">{{ block.caption | md_inline }}</figcaption>{% endif %}
+</figure>

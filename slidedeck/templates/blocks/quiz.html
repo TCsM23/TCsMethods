@@ -1,0 +1,29 @@
+<div class="slide-quiz-card" role="group" aria-label="{{ block.title }}"{% if mode == "screen" %} data-quiz data-answer="{{ block.answer }}"{% endif %}>
+  <p class="slide-quiz-card-label" aria-hidden="true">{{ block.title }}</p>
+  <div class="slide-quiz-card-question">{{ block.question | md }}</div>
+  {% if mode == "screen" %}
+  <ul class="slide-quiz-card-options">
+  {% for option in block.options %}
+    <li class="slide-quiz-card-item"><button type="button" class="slide-quiz-card-option" data-quiz-option="{{ loop.index0 }}"{% if option.correct %} data-correct{% endif %}>
+      <span class="slide-quiz-card-letter">{{ block.letter(loop.index0) }}</span>
+      <span class="slide-quiz-card-text">{{ option.text | md_inline }}</span>
+    </button></li>
+  {% endfor %}
+  </ul>
+  <p class="slide-quiz-card-result" data-quiz-result></p>
+  {% if block.explain %}<div class="slide-quiz-card-explain" data-quiz-explain hidden>{{ block.explain | md }}</div>{% endif %}
+  {% else %}
+  <ol class="slide-quiz-card-options">
+  {% for option in block.options %}
+    <li class="slide-quiz-card-item"><span class="slide-quiz-card-letter">{{ block.letter(loop.index0) }}</span> <span class="slide-quiz-card-text">{{ option.text | md_inline }}</span></li>
+  {% endfor %}
+  </ol>
+  {% if mode == "text" %}
+  <details class="slide-quiz-card-answer">
+    <summary>Answer</summary>
+    <p>{{ block.letter(block.answer) }}: {{ block.options[block.answer].text | md_inline }}</p>
+    {% if block.explain %}{{ block.explain | md }}{% endif %}
+  </details>
+  {% endif %}
+  {% endif %}
+</div>
